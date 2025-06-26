@@ -3,14 +3,16 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 function List({speakers, updateSpeaker}) {
-  const updatingId = 0; // 1269;
+  const [updatingId, setUpdatingId] = useState(0)
   const isPending = false;
 
   function toggleFavoriteSpeaker(speakerRec) {
     const speakerRecUpdated = {...speakerRec, favorite: !speakerRec.favorite};
     updateSpeaker(speakerRecUpdated);
     async function updateAsync(rec) {
+      setUpdatingId(rec.id);
       await axios.put(`/api/speakers/${rec.id}`, rec)
+      setUpdatingId(0);
     }
     updateAsync(speakerRecUpdated)
   }
