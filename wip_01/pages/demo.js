@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 export default function Demo() {
 
@@ -12,7 +12,6 @@ export default function Demo() {
 
   return (
     <div className="container">
-      {console.log("----return@1")}
       <h3>Some text here</h3>
       <input onChange={e => setText1(e.target.value)} value={text1} />
       <hr />

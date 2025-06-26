@@ -28,5 +28,47 @@ http://localhost:3000/_app
 
 
 
+code errors : hook rules
+-----------
+*  Hooks can only be called inside of the body of a function
+```jsx
+class ClassComponent extends React.Component {
+  render() {
+    useEffect(() => {}, []);
+    <h3>Some text here</h3>
+  }
+}
+```
+```
+Error: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+```
 
+*  Hooks cannot be called copnditionally
+```jsx
+if (track) {
+  useEffect(() => {
+    console.log(`hit`)
+    document.title = `${text1.length}`
+  }, [text1]);
+}
+```
+```
+Error: Rendered more hooks than during the previous render.
+ or
+Error: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+```
 
+* hooks can be called inside a function component
+```jsx
+export default function Demo() {
+  function fun() { return useState()}
+  return {}
+}
+```
+```
+ESlint error: neither a component nor a custom hook
+```
