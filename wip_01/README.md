@@ -126,3 +126,27 @@ http://localhost:3000/DemoUseRef
 * persists between rerenders
 * does not cause rerender
 * access real DOM html
+
+scrolling - a listener is necessary to trigger callback on scroll  
+and listener has to be removed to avoid memory leaks  
+setIsLoading(false); will trigger rerender after loaing
+[SpeakerImageToggleOnScroll.js](src/components/speakers/SpeakerImageToggleOnScroll.js)
+```jsx
+  useEffect(() => {
+  setInView(isInView());
+  setIsLoading(false);
+  window.addEventListener("scroll", scrollHandler);
+  return () => {
+    window.removeEventListener("scroll", scrollHandler);
+  };
+}, []);
+```
+
+avouid strange image sizes:
+```jsx
+      const gif1x1Transparent =
+        "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+
+    <img
+        src={isLoading ? gif1x1Transparent : imageUrl}
+```
