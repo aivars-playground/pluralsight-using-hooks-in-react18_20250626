@@ -76,8 +76,10 @@ ESlint error: neither a component nor a custom hook
 creating own hook - similar to useState
 ---------------------------------------
 http://localhost:3000/demoCustomHookNotWorking
-not as easy as in [demoCustomHookNotWorking.js](pages/demoCustomHookNotWorking.js)
+not as easy as in [demoCustomHookNotWorking.js](pages/demoCustomHookNotWorking.js)  
 
+
+http://localhost:3000/DemoCustomHook_Parent
 why hook rules are needed: guaranted sequence of invocation  
 usestate is globnal function, all states are stored in an array  
 see DemoCustomHook[DemoCustomHook_Parent.js](pages/DemoCustomHook_Parent.js)_Parent   
@@ -88,3 +90,31 @@ calling api
 -----------
 see ./pages/api - server provides GET/POST api  
 use fetch or axios  
+
+
+
+REDUCER
+-------
+http://localhost:3000/DemoReducer  
+can replace useState with no code...  
+* second param can be renamed .. .dispatcher > setText2
+* (_,action)   function ignores first param...
+```jsx
+const [text1, setText1] = useState("First")
+const [text2, setText2] = useReducer((_,action) => action,"Second")
+```
+
+or use more conventional syntax
+```jsx
+const [text2, dispatch] = useReducer(
+  (state, action) => {
+    switch (action.type) {
+      case "set":    {return action.payload},
+      default:  {}
+    }
+  },
+  "second"
+)
+
+dispatch({type:"set", payload: "new value"})
+```
