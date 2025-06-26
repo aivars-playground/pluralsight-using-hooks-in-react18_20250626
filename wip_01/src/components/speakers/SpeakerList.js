@@ -2,11 +2,18 @@ import SpeakerLine from "./SpeakerLine";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-function List({speakers}) {
+function List({speakers, updateSpeaker}) {
   const updatingId = 0; // 1269;
   const isPending = false;
 
-  function toggleFavoriteSpeaker(speakerRec) {}
+  function toggleFavoriteSpeaker(speakerRec) {
+    const speakerRecUpdated = {...speakerRec, favorite: !speakerRec.favorite};
+    updateSpeaker(speakerRecUpdated);
+    async function updateAsync(rec) {
+      await axios.put(`/api/speakers/${rec.id}`, rec)
+    }
+    updateAsync(speakerRecUpdated)
+  }
 
   return (
     <div className="container">
@@ -69,11 +76,18 @@ const SpeakerList = () => {
     fetchSpeakers();
   }, []);
 
+  function updateSpeaker(speakerRec) {
+    const speakerUpdated = speakers.map(
+      speaker => speakerRec.id === speaker.id ? speakerRec : speaker
+    )
+    setSpeakers(speakerUpdated);
+  }
+
   if (loading) return <div>loading...</div>
 
   return (
     <div className={darkTheme ? "theme-dark" : "theme-light"}>
-      <List speakers={speakers} />
+      <List speakers={speakers} updateSpeaker={updateSpeaker} />
     </div>
   );
 };
