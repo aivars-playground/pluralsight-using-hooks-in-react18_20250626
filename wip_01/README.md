@@ -82,3 +82,9 @@ why hook rules are needed: guaranted sequence of invocation
 usestate is globnal function, all states are stored in an array  
 see DemoCustomHook[DemoCustomHook_Parent.js](pages/DemoCustomHook_Parent.js)_Parent   
 ```currentLocalStateValueIndexGlobal, currentLocalStateValueIndexLocal```
+
+
+calling api
+-----------
+see ./pages/api - server provides GET/POST api  
+use fetch or axios  
