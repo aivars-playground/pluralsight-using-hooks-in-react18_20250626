@@ -64,7 +64,7 @@ Error: Rendered fewer hooks than expected. This may be caused by an accidental e
 
 * hooks can be called inside a function component
 ```jsx
-export default function Demo() {
+export default function DemoCustomHookNotWorking() {
   function fun() { return useState()}
   return {}
 }
@@ -72,3 +72,8 @@ export default function Demo() {
 ```
 ESlint error: neither a component nor a custom hook
 ```
+
+creating own hook - similar to useState
+---------------------------------------
+not as easy as in [demoCustomHookNotWorking.js](pages/demoCustomHookNotWorking.js)
+

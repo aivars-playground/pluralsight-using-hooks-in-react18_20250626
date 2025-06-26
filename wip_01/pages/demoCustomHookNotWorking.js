@@ -1,9 +1,25 @@
 import React, {useEffect, useState} from "react";
 
-export default function Demo() {
+
+let localStateValue = undefined;
+function useStateMyVersion(initial) {
+  if (localStateValue === undefined) {
+    localStateValue = initial;
+  }
+
+  const setValue = (value) => {
+    localStateValue = value;
+  }
+
+  const response = [localStateValue, setValue]
+  return response;
+}
+
+
+export default function DemoCustomHookNotWorking() {
 
   const [text1, setText1] = useState("First")
-  const [text2, setText2] = useState("Second")
+  const [text2, setText2] = useStateMyVersion("Second")
 
   useEffect(() => {
     console.log(`hit`)
