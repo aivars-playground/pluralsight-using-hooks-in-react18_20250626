@@ -75,5 +75,10 @@ ESlint error: neither a component nor a custom hook
 
 creating own hook - similar to useState
 ---------------------------------------
+http://localhost:3000/demoCustomHookNotWorking
 not as easy as in [demoCustomHookNotWorking.js](pages/demoCustomHookNotWorking.js)
 
+why hook rules are needed: guaranted sequence of invocation  
+usestate is globnal function, all states are stored in an array  
+see DemoCustomHook[DemoCustomHook_Parent.js](pages/DemoCustomHook_Parent.js)_Parent   
+```currentLocalStateValueIndexGlobal, currentLocalStateValueIndexLocal```
