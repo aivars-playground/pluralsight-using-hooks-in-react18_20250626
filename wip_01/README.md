@@ -118,3 +118,11 @@ const [text2, dispatch] = useReducer(
 
 dispatch({type:"set", payload: "new value"})
 ```
+
+
+useRef
+======
+http://localhost:3000/DemoUseRef
+* persists between rerenders
+* does not cause rerender
+* access real DOM html
