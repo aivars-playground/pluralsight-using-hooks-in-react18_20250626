@@ -1,14 +1,15 @@
 import SpeakerLine from "./SpeakerLine";
-import {useEffect, useState} from "react";
+import {useEffect, useReducer, useState} from "react";
 import axios from "axios";
+import {reducer} from "next/dist/client/components/reducer";
 
-function List({speakers, updateSpeaker}) {
+function List({state, dispatch}) {
   const [updatingId, setUpdatingId] = useState(0)
   const isPending = false;
 
   function toggleFavoriteSpeaker(speakerRec) {
     const speakerRecUpdated = {...speakerRec, favorite: !speakerRec.favorite};
-    updateSpeaker(speakerRecUpdated);
+    dispatch({type:"updateSpeaker", speaker: speakerRecUpdated});
     async function updateAsync(rec) {
       setUpdatingId(rec.id);
       await axios.put(`/api/speakers/${rec.id}`, rec)
@@ -45,7 +46,7 @@ function List({speakers, updateSpeaker}) {
       </div>
 
       <div className="row g-3">
-        {speakers.map(function (speakerRec) {
+        {state.speakers.map(function (speakerRec) {
           const highlight = false;
           return (
             <SpeakerLine
@@ -65,31 +66,43 @@ function List({speakers, updateSpeaker}) {
 const SpeakerList = () => {
   const darkTheme = false;
 
-  const [speakers, setSpeakers] = useState([])
-  const [loading, setLoading] = useState(true);
+  const initialState = {
+    speakers: [],
+    loading: true,
+  }
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case "speakersLoaded":
+        return { ...state, loading: false, speakers: action.speakers };
+      case "setLoadingStatus":
+        return { ...state, loading: true };
+      case "updateSpeaker":
+        const speakerUpdated = state.speakers.map(
+          speaker => action.speaker.id === speaker.id ? action.speaker : speaker
+        )
+        return { ...state, speakers: speakerUpdated };
+      default:
+        throw new Error("Unknown action type");
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
     async function fetchSpeakers() {
-      setLoading(true);
+      dispatch({type:"setLoadingStatus"});
       const response = await axios.get("/api/speakers");
-      setSpeakers(response.data);
-      setLoading(false)
+      dispatch({type:"speakersLoaded", speakers: response.data});
     }
     fetchSpeakers();
   }, []);
 
-  function updateSpeaker(speakerRec) {
-    const speakerUpdated = speakers.map(
-      speaker => speakerRec.id === speaker.id ? speakerRec : speaker
-    )
-    setSpeakers(speakerUpdated);
-  }
-
-  if (loading) return <div>loading...</div>
+  if (state.loading) return <div>loading...</div>
 
   return (
     <div className={darkTheme ? "theme-dark" : "theme-light"}>
-      <List speakers={speakers} updateSpeaker={updateSpeaker} />
+      <List state={state} dispatch={dispatch} />
     </div>
   );
 };
