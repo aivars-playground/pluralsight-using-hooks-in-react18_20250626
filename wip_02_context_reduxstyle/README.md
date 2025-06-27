@@ -157,4 +157,9 @@ Context Provider
 the code looks cleaner when extracting context to a separate file  
 [ThemeContext.js](src/components/contexts/ThemeContext.js)  
 
-
+Custom Hooks
+------------
+use generalised crud hook  
+[useGeneralizedCrudMethods.js](src/components/hooks/useGeneralizedCrudMethods.js)  
+adjust for easier use with a specialized hook  
+[useSpeakersData.js](src/components/hooks/useSpeakersData.js)
