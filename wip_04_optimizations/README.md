@@ -204,7 +204,7 @@ solution: add useCallback with dependency. this case: `[speakerRec.favorite]` bo
         highlight={highlight}
 ```
 
-* useDeferedValue / useTransition
+* useDeferedValue
 what we arte solving - user input triggers a request, slowing down an inpuit in ui
 
 ```jsx
@@ -214,6 +214,28 @@ const deferredSearch = useDeferredValue(search)
 return (
   <>
     <input value={search} onChange={e => setSearch(e.currentTarget.value)} />
+    <SlowQuery query={deferredSearch} />
+    </>
+)
+```
+
+* useTransition
+
+updates input, based on `currentSearch` at higher priority, 
+and `search` - triggering a slow task with lower priority
+--- `isPending` watning that ui os not consistent with requrst
+```jsx
+const [search, setSearch] = useContext("")
+const [isPending, startTransition] = useTransition()
+const [currentSearch, setCurrentSearch] = useContext("")
+
+return (
+  <>
+    <input value={currentSearch} onChange={e => {
+            setCurrentSearvh((e.currentTarget.value)
+            startTransition(() => setSearch(e.currentTarget.value))
+    }} />
+    {isPending && <div>spinner, ui upopdated faster than reqwues triggered</div>}
     <SlowQuery query={deferredSearch} />
     </>
 )
