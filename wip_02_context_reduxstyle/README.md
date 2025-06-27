@@ -150,3 +150,11 @@ avouid strange image sizes:
     <img
         src={isLoading ? gif1x1Transparent : imageUrl}
 ```
+
+
+Context Provider
+----------------
+the code looks cleaner when extracting context to a separate file  
+[ThemeContext.js](src/components/contexts/ThemeContext.js)  
+
+
