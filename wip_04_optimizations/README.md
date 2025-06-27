@@ -170,3 +170,38 @@ adjust for easier use with a specialized hook
 Optimization
 ============
 
+* useMemo
+
+useMemo does shallow compare -> if change speakerlst item choild component - memo does not rebuild
+use text representation of json....
+```jsx
+const speakerListJson = JSON.stringify(speakerList);
+
+const speakerListFiltered = useMemo(
+        () =>
+                useSpeakerSortAndFilter(...)
+        [speakingSaturday, speakingSunday, searchText, loadingStatus, speakerListJson] // dependencies
+```
+
+* memo
+if input parameters do not change - memorizes the result
+```jsx
+  const SpeakerLine = memo(
+    ({ speakerRec, toggleFavoriteSpeaker, updating, highlight }) => {return <div/>}
+  )
+```
+!!! important - toggleFavoriteSpeaker a function that can be created each time copmponent is rendered  
+solution: add useCallback with dependency. this case: `[speakerRec.favorite]` boolean value
+```jsx
+    <SpeakerLine
+        key={speakerRec.id}
+        speakerRec={speakerRec}
+        updating={updatingId === speakerRec.id ? updatingId : 0}
+        toggleFavoriteSpeaker={useCallback(
+                () => toggleFavoriteSpeaker(speakerRec),
+                [speakerRec.favorite]
+        )}
+        highlight={highlight}
+```
+
+
