@@ -184,7 +184,7 @@ const speakerListFiltered = useMemo(
 ```
 
 * memo
-if input parameters do not change - memorizes the result
+if input parameters do not change, memorizes the result
 ```jsx
   const SpeakerLine = memo(
     ({ speakerRec, toggleFavoriteSpeaker, updating, highlight }) => {return <div/>}
@@ -204,4 +204,17 @@ solution: add useCallback with dependency. this case: `[speakerRec.favorite]` bo
         highlight={highlight}
 ```
 
+* useDeferedValue / useTransition
+what we arte solving - user input triggers a request, slowing down an inpuit in ui
 
+```jsx
+const [search, setSearch] = useContext("")
+const deferredSearch = useDeferredValue(search)
+
+return (
+  <>
+    <input value={search} onChange={e => setSearch(e.currentTarget.value)} />
+    <SlowQuery query={deferredSearch} />
+    </>
+)
+```

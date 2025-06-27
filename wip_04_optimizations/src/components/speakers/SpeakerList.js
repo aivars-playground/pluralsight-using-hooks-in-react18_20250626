@@ -1,7 +1,7 @@
 import SpeakerLine from "./SpeakerLine";
 import {
   useCallback,
-  useContext,
+  useContext, useDeferredValue,
   useEffect,
   useReducer,
   useState,
@@ -11,6 +11,11 @@ import axios from "axios";
 
 function List({ state, dispatch }) {
   const [updatingId, setUpdatingId] = useState(0);
+
+  const [searchName, setSearchName] = useState("");
+  const deferredSearchName = useDeferredValue(searchName)
+
+
   const isPending = false;
   const speakers = state.speakers;
 
@@ -42,8 +47,10 @@ function List({ state, dispatch }) {
           <div className="toolbar-trigger mb-3 flex-grow-04">
             <div className="toolbar-search w-100">
               <input
-                value=""
-                onChange={(event) => {}}
+                value={searchName}
+                onChange={
+                  (event) => {setSearchName(event.target.value)}
+                }
                 type="text"
                 className="form-control"
                 placeholder="Highlight Names"
@@ -60,7 +67,13 @@ function List({ state, dispatch }) {
 
       <div className="row g-3">
         {speakers.map(function (speakerRec) {
-          const highlight = false;
+          const highlight = deferredSearchName?.length > 0 &&
+            (
+              speakerRec.firstName?.toLowerCase() +
+              speakerRec.lastName?.toLowerCase()
+            ).includes(deferredSearchName.toLowerCase())
+              ? true
+              : false;
           return (
             <SpeakerLine
               key={speakerRec.id}
